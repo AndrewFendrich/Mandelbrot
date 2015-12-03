@@ -16,8 +16,8 @@ pygame.init()
 
 screenWidth = 640
 screenHeight = 200
-colors = screenWidth
-colorBands = 3
+colors = 128
+colorBands = 1 + int(screenWidth/colors)
 
 
 screen = pygame.display.set_mode((screenWidth, screenHeight))
@@ -33,6 +33,7 @@ print("colorgradient:",len(colorgradient))
 
 size = len(colorgradient)
 step = int(screenWidth/size)
+
 if step == 0:
     step = 1
 for i in range(screenWidth):

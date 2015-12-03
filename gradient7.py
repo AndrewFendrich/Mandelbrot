@@ -1,10 +1,10 @@
 #def gradient_list((R1,G1,B1),(R2,G2,B2),steps):
 #import sys,os
 
-def gradient_list(Color1,Color2,steps,colorBands = 1):  
+def gradient_list(Color1,Color2,steps = 16,colorBands = 1):  
     gradientList = []
-    totalSteps = int(steps)
-    steps = steps / colorBands
+    totalSteps = int(steps) * colorBands
+#    steps = steps / colorBands
     redsteps = int(steps/3 +(1/3))
     greensteps = int(steps/3 + (1/3))
     bluesteps = int(steps/3 + (1/3))
@@ -24,14 +24,15 @@ def gradient_list(Color1,Color2,steps,colorBands = 1):
             binterval = (Color1[2]-Color2[2])/steps*3
 
         for i in range(redsteps):
+            fade = 256-(int(256*(i+1)/redsteps))
             rc1 = int(Color1[0] +rinterval)
-            gradientList.append(((rc1*i,0,0)))
+            gradientList.append(((rc1*i,0,fade)))
         for i in range(greensteps):
             gc1 = int(Color1[1] +ginterval)
-            gradientList.append(((125-(int(125*(i+1)/greensteps)),gc1*i,0)))
+            gradientList.append(((200-(int(200*(i+1)/greensteps)),gc1*i,0)))
         for i in range(bluesteps):
             bc1 = int(Color1[2] +binterval)
-            gradientList.append((0,125-(int(125*(i+1)/bluesteps)),bc1*i))
+            gradientList.append((0,200-(int(200*(i+1)/bluesteps)),bc1*i))
     print()    
     missingcolors = totalSteps - len(gradientList)
     for i in range(missingcolors):
