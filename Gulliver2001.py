@@ -75,19 +75,13 @@ def brot(complexCoords,iterations,frameCount):
         pygame.display.flip()
         for j in range(screenHeight):
             grid[i,j] = mandel_pixel(complex(xm[i],ym[j]),iterations)
-#        if i % 10 == 0:
-#            pygame.display.flip()
     pygame.display.flip()
-#    print("xa:",xa,"xb:",xb,"ya:",ya,"yb:",yb)
     imagename = []
     imagename.append("xa" + str(xa) + "xb" + str(xb))
     imagename.append("ya" + str(ya) + "yb" + str(yb))
-#    imagename.append("_W" + str(screenWidth) + "_H" + str(screenHeight))
     imagename.append("_iter" + str(iterations))   
     fn = "".join(imagename) 
     imagename = fn.replace(".","-")
-#    print(imagename)
-#    print(fn)
     pygame.image.save(screen,"Images!!!\\" +"151203\\"  + str(framecount) + "1ACF_" + imagename + ".bmp")
 
 zoom = 0.50
