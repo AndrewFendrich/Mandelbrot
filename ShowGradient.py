@@ -16,7 +16,7 @@ pygame.init()
 
 screenWidth = 640
 screenHeight = 200
-colors = 128
+colors = 256
 colorBands = 1 + int(screenWidth/colors)
 
 

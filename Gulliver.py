@@ -15,10 +15,10 @@ pygame.init()
 
 screenWidth = 640
 screenHeight = 480
-iterations = 256
+iterations = 64
 framecount = 0
-NumberOfColors = 65536
-colorBands = int(65536/256)
+NumberOfColors = 64
+colorBands = int(screenWidth/NumberOfColors)
 color1 = (0,0,0)
 color2 = (255,255,255)
 Colors = gradient.gradient_list(color1,color2,NumberOfColors,colorBands)
@@ -88,7 +88,7 @@ def brot(complexCoords,iterations):
     imagename = fn.replace(".","-")
 #    print(imagename)
 #    print(fn)
-    pygame.image.save(screen,"Images!!!\\" +"151202\\"  + str(framecount) + "1ACF_" + imagename + ".bmp")
+    pygame.image.save(screen,"Images!!!\\" +"151203\\"  + str(framecount) + "1ACF_" + imagename + ".bmp")
     
 zoom = 0.50
 x = screenWidth
