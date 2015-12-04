@@ -1,6 +1,6 @@
-\Images!!!
-\__pycache__
-*.pyc
-*.bmp
+*\Images!!!
 *.jpg
+*.bmp
 *.gif
+*.pyc
+\__pycache__
