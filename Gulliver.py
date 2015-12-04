@@ -16,7 +16,7 @@ pygame.init()
 screenWidth = 640
 screenHeight = 480
 iterations = 64
-framecount = 0
+frameCount = 0
 NumberOfColors = 64
 colorBands = int(screenWidth/NumberOfColors)
 color1 = (0,0,0)
@@ -59,7 +59,7 @@ def mandel_pixel(c,n = 256):
             return(Colors[i])
     return((0,0,0))
 
-def brot(complexCoords,iterations):
+def brot(complexCoords,iterations,frameCount):
     xa = complexCoords[0]
     xb = complexCoords[1]
     ya = complexCoords[2]
@@ -89,7 +89,7 @@ def brot(complexCoords,iterations):
 #    print(imagename)
 #    print(fn)
     pygame.image.save(screen,"Images!!!\\" +"151203\\"  + str(framecount) + "1ACF_" + imagename + ".bmp")
-    
+
 zoom = 0.50
 x = screenWidth
 y = screenHeight
@@ -183,8 +183,6 @@ while True:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mousecoords = mouseCoordsToComplexCoords(Coords)
             Coords = moveWindow(Coords,mousecoords[0],mousecoords[1])
-            REDRAW = True
-#            brot(Coords,iterations)
         elif event.type == pygame.KEYDOWN:
             mods = pygame.key.get_mods()
             if event.key == pygame.K_ESCAPE:
@@ -193,13 +191,10 @@ while True:
                 REDRAW = True
             elif event.key == pygame.K_KP8:
                 iterations = int(iterations *1.125)
-                print("Iterations:",iterations)
             elif event.key == pygame.K_KP5:
                 iterations = int(iterations *10)    
-                print("Iterations:",iterations)
             elif event.key == pygame.K_KP2:
-                iterations = int(iterations/3)
-                print("Iterations:",iterations)
+                iterations = int(iterations/3) 
             elif event.key == pygame.K_KP9:
                 Coords = zoomIn(Coords,0.125)
             elif event.key == pygame.K_KP6:
@@ -208,18 +203,19 @@ while True:
                 Coords = zoomOut(Coords,1/3)
             elif event.key == pygame.K_KP7:
                 colorBands = colorBands +1
-                print("colorBands:",colorBands)
                 Colors = gradient.gradient_list(color1,color2,NumberOfColors,colorBands)
             elif event.key == pygame.K_KP4:
                 colorBands = colorBands *10
-                print("colorBands:",colorBands)
                 Colors = gradient.gradient_list(color1,color2,NumberOfColors,colorBands)
             elif event.key == pygame.K_KP1:
                 colorBands = int(colorBands /10)
                 if colorBands <= 1:
-                    colorBands = 1
-                print("colorBands:",colorBands)
+                    colorBands = 1    
                 Colors = gradient.gradient_list(color1,color2,NumberOfColors,colorBands)           
+            if iterations <= 1:
+                iterations = 1 
+            print("colorBands:",colorBands,"Iterations:",iterations) 
     if REDRAW == True:
-        brot(Coords,iterations)
+        brot(Coords,iterations,frameCount)
+        frameCount = frameCount + 1
         print(Coords)
