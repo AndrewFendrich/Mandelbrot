@@ -1,0 +1,1 @@
+Interesting.  These examples work right out of the box and seem to be exactly what I need to interface two scripts.  I now need to build a GUI to control the main mandelbrot window.
