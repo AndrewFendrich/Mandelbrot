@@ -7,21 +7,23 @@ Created on Fri Nov 27 14:22:28 2015
 
 import pygame
 import math,random
-import sys
-import time
+import sys, os
+import time, datetime
 import gradient7 as gradient
 
 pygame.init()
 
-screenWidth = 640
-screenHeight = 480
-iterations = 64
+screenWidth = 320
+screenHeight = 240
+iterations = 32
 frameCount = 0
-NumberOfColors = 64
+NumberOfColors = 128
 colorBands = int(screenWidth/NumberOfColors)
 color1 = (0,0,0)
 color2 = (255,255,255)
 Colors = gradient.gradient_list(color1,color2,NumberOfColors,colorBands)
+date = time.strftime("%Y%m%d")
+folderPath = "Images\\" + str(date + "\\")
 
 
 ###   defining starting coordinates ###
@@ -59,6 +61,11 @@ def mandel_pixel(c,n = 256):
             return(Colors[i])
     return((0,0,0))
 
+def create_if_necessary(folderPath):
+    d = os.path.dirname(folderPath)
+    if not os.path.exists(folderPath):
+        os.makedirs(folderPath)
+
 def brot(complexCoords,iterations,frameCount):
     xa = complexCoords[0]
     xb = complexCoords[1]
@@ -79,10 +86,11 @@ def brot(complexCoords,iterations,frameCount):
     imagename = []
     imagename.append("xa" + str(xa) + "xb" + str(xb))
     imagename.append("ya" + str(ya) + "yb" + str(yb))
-    imagename.append("_iter" + str(iterations))   
+    imagename.append("_iter" + str(iterations))    
     fn = "".join(imagename) 
     imagename = fn.replace(".","-")
-    pygame.image.save(screen,"Images!!!\\" +"151203\\"  + str(frameCount) + "-_xACFx_-" + imagename + ".bmp")
+    create_if_necessary(folderPath)
+    pygame.image.save(screen,folderPath + str(frameCount) + "-_xACFx_-" + imagename + ".bmp")
 
 zoom = 0.50
 x = screenWidth
@@ -170,7 +178,7 @@ def zoomOut(complexCoords,scale):
     return(newCoords)
 
 
-from multiprocessing.connection import Client
+from multiprocessing.connection import Client, Listener
 
 address = ('localhost', 6000)     # family is deduced to be 'AF_INET'
 
