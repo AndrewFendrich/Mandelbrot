@@ -8,15 +8,21 @@ that source is intended to be another window
 
 @author: User
 """
+import sys
 import pygame
 import random
 import time
+import messenger
+
 from multiprocessing.connection import Client
 from multiprocessing.connection import Listener
 #from array import array
 
 pygame.init()
 address = ('localhost', 6000)
+
+
+
 
 def HexColorRandom():
     R = int(random.randrange(0,256))
@@ -28,17 +34,33 @@ screen = pygame.display.set_mode((300,670))
 screen.fill(HexColorRandom())
 
 
+
+
 while True:
-#    REDRAW = False
-#    for event in pygame.event.get():
-#        if event.type == pygame.QUIT:
-#            sys.exit()
-    time.sleep(0.25)
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            sys.exit()
+
+        elif event.type == pygame.KEYDOWN:
+            mods = pygame.key.get_mods()
+            if event.key == pygame.K_ESCAPE:
+                sys.exit()
+                
+    time.sleep(0.5)
+
+    messenger.talk("Are you There display?")
+    print(messenger.listen())
+
+"""    
     try:    
         with Listener(address, authkey=b'secret password') as listener:
             with listener.accept() as conn:
                 print('connection accepted from', listener.last_accepted)
-                conn.send("Hello Client!  You owe me money")
+                message = time.strftime("%Y%m%d")
+                message = message + "_"
+                message = message + time.strftime("%H%M%S")
+                conn.send(message)
     except:
         print("No receivers detected")
     try:
@@ -47,6 +69,13 @@ while True:
             print(message)
     except:
         print("No broadcasters detected")
+"""        
+        
+        
+        
+        
+        
+        
 """
 original Gulliver loop
 

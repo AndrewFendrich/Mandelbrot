@@ -10,6 +10,7 @@ import math,random
 import sys, os
 import time, datetime
 import gradient7 as gradient
+import messenger
 
 pygame.init()
 
@@ -62,7 +63,7 @@ def mandel_pixel(c,n = 256):
     return((0,0,0))
 
 def create_if_necessary(folderPath):
-    d = os.path.dirname(folderPath)
+#    d = os.path.dirname(folderPath)
     if not os.path.exists(folderPath):
         os.makedirs(folderPath)
 
@@ -178,26 +179,32 @@ def zoomOut(complexCoords,scale):
     return(newCoords)
 
 
-from multiprocessing.connection import Client, Listener
+#from multiprocessing.connection import Client, Listener
 
-address = ('localhost', 6000)     # family is deduced to be 'AF_INET'
+#address = ('localhost', 6000)     # family is deduced to be 'AF_INET'
 
 
 while True:    
-    REDRAW = False
+    Idle = True
+    Redraw = True
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
+            Idle = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mousecoords = mouseCoordsToComplexCoords(Coords)
             Coords = moveWindow(Coords,mousecoords[0],mousecoords[1])
-    try:
-        with Client(address, authkey=b'secret password') as conn:
-            message = conn.recv()
-            print(message)      
-    except:
-        print("Connection Timeout")
+            Idle = False
+   
+    if Idle:
+        messenger.talk("Idle")
+    messageIn = messenger.listen()
+    if not messageIn:
+        print(messageIn)
+        Idle = False
+###  Create the event 
     print("colorBands:",colorBands,"Iterations:",iterations) 
+    REDRAW = False
     if REDRAW == True:
         brot(Coords,iterations,frameCount)
         frameCount = frameCount + 1
