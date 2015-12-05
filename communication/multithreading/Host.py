@@ -12,3 +12,5 @@ with Listener(address, authkey=b'secret password') as listener:
         conn.send_bytes(b'hello')
 
         conn.send_bytes(array('i', [42, 1729]))
+        
+        conn.send("Hello Client!  You owe me money")

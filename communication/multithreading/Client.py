@@ -11,3 +11,4 @@ with Client(address, authkey=b'secret password') as conn:
     arr = array('i', [0, 0, 0, 0, 0])
     print(conn.recv_bytes_into(arr))    # => 8
     print(arr)                          # => array('i', [42, 1729, 0, 0, 0])
+    print(conn.recv())
