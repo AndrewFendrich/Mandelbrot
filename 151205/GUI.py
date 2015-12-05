@@ -11,7 +11,7 @@ that source is intended to be another window
 import pygame
 import random
 import time
-#from multiprocessing.connection import Client
+from multiprocessing.connection import Client
 from multiprocessing.connection import Listener
 #from array import array
 
@@ -34,10 +34,19 @@ while True:
 #        if event.type == pygame.QUIT:
 #            sys.exit()
     time.sleep(0.25)
-    with Listener(address, authkey=b'secret password') as listener:
-        with listener.accept() as conn:
-            print('connection accepted from', listener.last_accepted)
-            conn.send("Hello Client!  You owe me money")
+    try:    
+        with Listener(address, authkey=b'secret password') as listener:
+            with listener.accept() as conn:
+                print('connection accepted from', listener.last_accepted)
+                conn.send("Hello Client!  You owe me money")
+    except:
+        print("No receivers detected")
+    try:
+        with Client(address, authkey=b'secret password') as conn:
+            message = conn.recv()
+            print(message)
+    except:
+        print("No broadcasters detected")
 """
 original Gulliver loop
 
