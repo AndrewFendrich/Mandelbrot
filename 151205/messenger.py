@@ -9,11 +9,10 @@ from multiprocessing.connection import Client
 from multiprocessing.connection import Listener
 address = ('localhost', 6000)
 
-
-def talk(message = ""):
+def talk(message = "",address = "broadcast"):
     print("try:")
     try:    
-        with Listener(address, authkey=b'secret password') as listener:
+        with Listener(address, authkey=address) as listener:
             print("with Listener(addr...")
             with listener.accept() as conn:
                 message = str(listener.last_accepted)
