@@ -10,7 +10,6 @@ from multiprocessing.connection import Listener
 address = ('localhost', 6000)
 
 def talk(message = "",address = "broadcast"):
-    print("try:")
     try:    
         with Listener(address, authkey=address) as listener:
             print("with Listener(addr...")
