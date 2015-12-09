@@ -49,7 +49,7 @@ while True:
                 
     time.sleep(0.5)
 
-    messenger.talk("Are you There display?")
+    messenger.talk("Are you There display?","broadcast")
     print(messenger.listen())
 
 """    

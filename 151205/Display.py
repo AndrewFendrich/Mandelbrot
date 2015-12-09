@@ -197,7 +197,7 @@ while True:
             Idle = False
    
     if Idle:
-        messenger.talk("Idle")
+        messenger.talk("Idle","broadcast")
     messageIn = messenger.listen()
     if not messageIn:
         print(messageIn)
