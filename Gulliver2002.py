@@ -164,15 +164,7 @@ while True:
                 iterations = int(iterations *0.500)
                 print("Iterations:",iterations)
             elif event.key == pygame.K_KP_PLUS:
-#                x0 = (xa+xb)/2
-#                y0 = (ya+yb)/2
-#                xscale = abs((x0 - xa)*zoom)
-#                yscale = abs((y0 - ya)*zoom)
-#                xa = xa + xscale
-#                xb = xb - xscale
-#                ya = ya + yscale
-#                yb = yb - yscale
-                """   New Attempt At Zoom """
+#Scale the complex plane coordinates
                 x0 = (xa+xb)/2
                 y0 = (ya+yb)/2
                 xscale = abs((x0 - xa)*zoom)
@@ -181,15 +173,39 @@ while True:
                 xb = xb - xscale
                 ya = ya + yscale
                 yb = yb - yscale
-                x1 = screenWidth * zoom / 2
-                x2 = screenWidth - screenWidth * zoom / 2
+#get cropped section of image
+                z = 100
+                x1 = int(screenWidth * zoom /2) +1
+                x2 = int(screenWidth - screenWidth * zoom/2)+1
                 W = x2 - x1
-                y1 = screenHeight * zoom / 2
-                y2 = screenHeight * zoom / 2
-                H = y2 - y1                
+                y1 = int(screenHeight * zoom/2)+1
+                y2 = int(screenHeight - screenHeight * zoom/2)+1
+                H = y2 - y1        
+                crop1 = pygame.transform.chop(screen,(0,0,x1,y1))
+                crop2 = pygame.transform.chop(crop1,(screenWidth - 2*x1 ,screenHeight - 2*y1,screenWidth-x1,screenHeight - y1))
+                print("||x1:",x1,"|y1:",y1,"|x2: ",x2,"|y2:",y2,"|W:",W,"|H:",H,"|temp:",zoom)
+
                 
-                crop = pygame.transform.chop(pygame.transform.chop(screen,(0,0,x1,y1)),(x2,y2,screenWidth,screenHeight))
-                pygame.transform.scale(crop,(screenWidth,screenHeight),screen)
+                Wzoombit = int(screenWidth* zoom / z)
+                Hzoombit = int(screenHeight * zoom / z)
+                W=64
+                H=48                
+                Werror = screenWidth - (Wzoombit*2*z+64)
+                Herror = screenHeight - (Hzoombit*2*z+48)
+                print("Wzoombit:",Wzoombit,"Hzoombit:",Hzoombit,"Werror:",Werror,"Herror:",Herror) 
+                
+                for i in range(2*z):
+                    newX = (screenWidth - W) /2
+                    newY = (screenHeight - H) /2
+                    image = pygame.transform.scale(crop2,(W,H))
+                    screen.blit(image,(newX,newY))
+#                    print("i = ",i,"newXY:",newX,newY)
+                    pygame.display.flip()
+                    W = W + Wzoombit
+                    H = H + Hzoombit
+                    time.sleep(0.0125)
+                
+                """  """
 #                grid = pygame.PixelArray(screen)
 #                grid.transform.scale(scree)                
 #                brot(xa,xb,ya,yb,iterations)
