@@ -1,5 +1,5 @@
 #Initial screen resolution
-screen_size = [320,240]
+screen_size = [1280,1024]
 
 #Initial bounds of real axis
 bounds_x = [-2.0,1.0]
@@ -19,7 +19,7 @@ smooth_shading_scale = 1.0
 
 #For smooth shading, the iterations will need to be higher for a
 #   smaller shading scale.
-iterations = 10000
+iterations = 256
 
 #Zoom speed
 #   Closer to 1.0 is slower zooming
