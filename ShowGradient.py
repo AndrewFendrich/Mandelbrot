@@ -14,9 +14,9 @@ import gradient7 as gradient
 
 pygame.init()
 
-screenWidth = 640
+screenWidth = 1280
 screenHeight = 200
-colors = 256
+colors = 640
 colorBands = 1 + int(screenWidth/colors)
 
 
