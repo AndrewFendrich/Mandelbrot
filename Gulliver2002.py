@@ -13,8 +13,8 @@ import gradient6 as gradient
 
 pygame.init()
 
-screenWidth = 320
-screenHeight = 240
+screenWidth = 800
+screenHeight = 600
 iterations = 16
 framecount = 0
 NumberOfColors = 64

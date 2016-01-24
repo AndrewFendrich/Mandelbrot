@@ -13,8 +13,8 @@ import gradient7 as gradient
 
 pygame.init()
 
-screenWidth = 640
-screenHeight = 480
+screenWidth = 320
+screenHeight = 240
 iterations = 64
 frameCount = 0
 NumberOfColors = 64
@@ -22,7 +22,8 @@ colorBands = int(screenWidth/NumberOfColors)
 color1 = (0,0,0)
 color2 = (255,255,255)
 Colors = gradient.gradient_list(color1,color2,NumberOfColors,colorBands)
-
+WalksLoaded = False
+#Walks = "0"
 
 ###   defining starting coordinates ###
 Coords0 = (-2,1.0,-1,1.0)
@@ -59,6 +60,33 @@ def mandel_pixel(c,n = 256):
             return(Colors[i])
     return((0,0,0))
 
+def imageWalks(WalksLoaded):
+#    Walks = "0"
+    if WalksLoaded:
+        return(Walks)
+    else:
+        f = open('walks.txt','r')
+        print(f)
+        Walks = f
+        print(Walks)
+        Walks = f.readline()
+        print("readline:"+Walks)
+        f.close()
+        f = open('walks.txt','w')
+        Walks = str(int(Walks) + 1)
+        print("newWalks:" + Walks)
+        f.write(Walks)
+        f.close()
+        WalksLoaded = True
+    return(Walks)
+    
+Walks = ""    
+Walks = imageWalks(WalksLoaded)
+    
+def imageSave():
+    pygame.image.save(screen,"Images\\"+ "Walk"+ walks  + "Frame" + str(frameCount) + "ACF" + imagename + ".bmp")
+    
+
 def brot(complexCoords,iterations,frameCount):
     xa = complexCoords[0]
     xb = complexCoords[1]
@@ -79,16 +107,18 @@ def brot(complexCoords,iterations,frameCount):
 #            pygame.display.flip()
     pygame.display.flip()
 #    print("xa:",xa,"xb:",xb,"ya:",ya,"yb:",yb)
+    imageCenterX = str((xa + xb)/2)
+    imageCenterY = str((ya + yb)/2)
     imagename = []
-    imagename.append("xa" + str(xa) + "xb" + str(xb))
-    imagename.append("ya" + str(ya) + "yb" + str(yb))
-#    imagename.append("_W" + str(screenWidth) + "_H" + str(screenHeight))
-    imagename.append("_iter" + str(iterations))   
+#    imagename.append(Walks)
+    imagename.append("cX" + imageCenterX + "cY" + imageCenterY)
+    imagename.append("I" + str(iterations))
+    imagename.append("H" + str(screenHeight))
+    imagename.append("W" + str(screenWidth))
     fn = "".join(imagename) 
     imagename = fn.replace(".","-")
-#    print(imagename)
-#    print(fn)
-    pygame.image.save(screen,"Images!!!\\" +"151203\\"  + str(framecount) + "1ACF_" + imagename + ".bmp")
+
+    pygame.image.save(screen,"Images\\"+ "Walk"+ Walks  + "Frame" + str(frameCount) + "ACF" + imagename + ".bmp")
 
 zoom = 0.50
 x = screenWidth
