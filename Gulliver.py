@@ -15,9 +15,9 @@ pygame.init()
 
 screenWidth = 320
 screenHeight = 240
-iterations = 64
+iterations = 256
 frameCount = 0
-NumberOfColors = 64
+NumberOfColors = 256
 colorBands = int(screenWidth/NumberOfColors)
 color1 = (0,0,0)
 color2 = (255,255,255)
