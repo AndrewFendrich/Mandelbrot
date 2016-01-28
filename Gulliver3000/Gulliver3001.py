@@ -10,13 +10,18 @@ import math,random
 import sys
 import time
 import gradient
+import mandelPixel
 
-iterations = 24
+a = complex(1.1,-1)
 
+Pixel = mandelPixel.mandelPixel(a)
 
-gradient = gradient.linear_gradient([50,15,1],[255,255,199],iterations)
+for i in range(30):
+    if(Pixel.iterate()):
+        break
 
+Grid = mandelPixel.grid(-a,a,4,4)
 
-for thing in gradient:
-    print(thing)
-
+for i in range(30):
+    if(Grid.grid[2][2].iterate()):
+        break
