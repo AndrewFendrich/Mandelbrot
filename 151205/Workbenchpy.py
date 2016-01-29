@@ -7,23 +7,25 @@ Created on Fri Nov 27 14:22:28 2015
 
 import pygame
 import math,random
-import sys
-import time
+import sys, os
+import time, datetime
 import gradient7 as gradient
+#import messenger
 
 pygame.init()
 
 screenWidth = 320
 screenHeight = 240
-iterations = 256
+iterations = 32
 frameCount = 0
-NumberOfColors = 256
+NumberOfColors = 128
 colorBands = int(screenWidth/NumberOfColors)
 color1 = (0,0,0)
 color2 = (255,255,255)
 Colors = gradient.gradient_list(color1,color2,NumberOfColors,colorBands)
-WalksLoaded = False
-#Walks = "0"
+date = time.strftime("%Y%m%d")
+folderPath = "Images\\" + str(date + "\\")
+
 
 ###   defining starting coordinates ###
 Coords0 = (-2,1.0,-1,1.0)
@@ -60,32 +62,10 @@ def mandel_pixel(c,n = 256):
             return(Colors[i])
     return((0,0,0))
 
-def imageWalks(WalksLoaded):
-#    Walks = "0"
-    if WalksLoaded:
-        return(Walks)
-    else:
-        f = open('walks.txt','r')
-        print(f)
-        Walks = f
-        print(Walks)
-        Walks = f.readline()
-        print("readline:"+Walks)
-        f.close()
-        f = open('walks.txt','w')
-        Walks = str(int(Walks) + 1)
-        print("newWalks:" + Walks)
-        f.write(Walks)
-        f.close()
-        WalksLoaded = True
-    return(Walks)
-    
-Walks = ""    
-Walks = imageWalks(WalksLoaded)
-    
-def imageSave():
-    pygame.image.save(screen,"Images\\"+ "Walk"+ walks  + "Frame" + str(frameCount) + "ACF" + imagename + ".bmp")
-    
+def create_if_necessary(folderPath):
+#    d = os.path.dirname(folderPath)
+    if not os.path.exists(folderPath):
+        os.makedirs(folderPath)
 
 def brot(complexCoords,iterations,frameCount):
     xa = complexCoords[0]
@@ -104,23 +84,26 @@ def brot(complexCoords,iterations,frameCount):
         for j in range(screenHeight):
             grid[i,j] = mandel_pixel(complex(xm[i],ym[j]),iterations)
     pygame.display.flip()
-
-    imageCenterX = str((xa + xb)/2)
-    imageCenterY = str((ya + yb)/2)
     imagename = []
-    imagename.append("cX" + imageCenterX + "cY" + imageCenterY)
-    imagename.append("I" + str(iterations))
-    imagename.append("H" + str(screenHeight))
-    imagename.append("W" + str(screenWidth))
+    imagename.append("xa" + str(xa) + "xb" + str(xb))
+    imagename.append("ya" + str(ya) + "yb" + str(yb))
+    imagename.append("_iter" + str(iterations))    
     fn = "".join(imagename) 
     imagename = fn.replace(".","-")
-    pygame.image.save(screen,"Images\\"+ "Walk"+ Walks  + "Frame" + str(frameCount) + "ACF" + imagename + ".bmp")
+    create_if_necessary(folderPath)
+    pygame.image.save(screen,folderPath + str(frameCount) + "-_xACFx_-" + imagename + ".bmp")
 
 zoom = 0.50
 x = screenWidth
 y = screenHeight
 
 xa, xb, ya, yb = Coords[0],Coords[1],Coords[2],Coords[3]
+    
+#xa = -2.0; xb = 1.0
+#ya = -1.27; yb = 1.27
+#for i in range(32)
+
+brot(Coords,iterations,0) 
 
 def mouseCoordsToComplexCoords(complexCoords):
     xa = complexCoords[0]
@@ -195,54 +178,25 @@ def zoomOut(complexCoords,scale):
     print("zoomOut newCoords:",newCoords)
     return(newCoords)
 
-def keypadevent(event):
-    mods = pygame.key.get_mods()
-    if event.key == pygame.K_ESCAPE:
-        sys.exit()
-    elif event.key == pygame.K_RETURN:
-        REDRAW = True
-    elif event.key == pygame.K_KP8:
-        iterations = int(iterations *1.125)
-        if iterations <= 1:
-            iterations = 1 
-    elif event.key == pygame.K_KP5:
-        iterations = int(iterations *10)    
-        if iterations <= 1:
-            iterations = 1 
-    elif event.key == pygame.K_KP2:
-        iterations = int(iterations/3) 
-        if iterations <= 1:
-            iterations = 1 
-    elif event.key == pygame.K_KP9:
-        Coords = zoomIn(Coords,0.125)
-    elif event.key == pygame.K_KP6:
-        Coords = zoomIn(Coords,0.90)
-    elif event.key == pygame.K_KP3:
-        Coords = zoomOut(Coords,1/3)
-    elif event.key == pygame.K_KP7:
-        colorBands = colorBands +1
-        Colors = gradient.gradient_list(color1,color2,NumberOfColors,colorBands)
-    elif event.key == pygame.K_KP4:
-        colorBands = colorBands *10
-        Colors = gradient.gradient_list(color1,color2,NumberOfColors,colorBands)
-        if colorBands <= 1:
-            colorBands = 1
-    elif event.key == pygame.K_KP1:
-        colorBands = int(colorBands /10)
-        if colorBands <= 1:
-            colorBands = 1  
-    print("colorBands:",colorBands,"Iterations:",iterations) 
-    
+
+#from multiprocessing.connection import Client, Listener
+
+#address = ('localhost', 6000)     # family is deduced to be 'AF_INET'
+
+
 while True:    
-    REDRAW = False
+    Idle = True
+    Redraw = True
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
+            Idle = True
         elif event.type == pygame.MOUSEBUTTONDOWN:
             mousecoords = mouseCoordsToComplexCoords(Coords)
             Coords = moveWindow(Coords,mousecoords[0],mousecoords[1])
-        elif event.type == pygame.KEYDOWN:
-            keypadevent(event)
+            Idle = False
+    print("colorBands:",colorBands,"Iterations:",iterations) 
+    REDRAW = False
     if REDRAW == True:
         brot(Coords,iterations,frameCount)
         frameCount = frameCount + 1
